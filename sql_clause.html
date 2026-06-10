@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Clauses Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            border-bottom: 4px solid #667eea;
+            padding-bottom: 15px;
+        }
+
+        h2 {
+            color: #764ba2;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-left: 5px solid #764ba2;
+            padding-left: 15px;
+        }
+
+        h3 {
+            color: #555;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        .intro {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 25px 0;
+            font-size: 1.1em;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .definition {
+            background-color: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .definition strong {
+            color: #667eea;
+            font-size: 1.1em;
+        }
+
+        pre {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            border-left: 5px solid #667eea;
+        }
+
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95em;
+        }
+
+        .syntax {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .syntax strong {
+            color: #0d47a1;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .example {
+            background-color: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .example strong {
+            color: #2e7d32;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .note strong {
+            color: #856404;
+        }
+
+        .info {
+            background-color: #e1f5fe;
+            border-left: 4px solid #00bcd4;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .info strong {
+            color: #006064;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        p {
+            margin: 15px 0;
+            text-align: justify;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .highlight {
+            background-color: #fff9c4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+
+        .comparison-table {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        li {
+            margin: 8px 0;
+            color: #555;
+        }
+
+        .clause-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SQL Clauses Guide</h1>
+        
+        <div class="intro">
+            In SQL, a <strong>clause</strong> is a specific part of a query that defines how data should be retrieved, filtered, grouped, or organized. Clauses are the building blocks of SQL statements like SELECT, UPDATE, DELETE, and INSERT.
+        </div>
+
+        
+
+        <div class="section">
+            <h2>SQL WHERE Clause</h2>
+            
+            <p>One of the most crucial tasks we perform is filtering data when working with databases. Not every query requires all the rows from a table when we are interested in only a few records that match a specific condition - that's where the WHERE clause comes in.</p>
+
+            <div class="syntax">
+                <strong>Syntax:</strong>
+                <pre><code>SELECT column1, column2, ...
+FROM table_name
+WHERE condition;</code></pre>
+            </div>
+
+            
+        </div>
+
+        <div class="section">
+            <h2>SQL AND/OR</h2>
+            
+            <h3>SQL AND Condition</h3>
+            
+            <p>The SQL AND condition is used in SQL query to create two or more conditions to be met. It is used in SQL SELECT, INSERT, UPDATE and DELETE statements.</p>
+
+            <div class="definition">
+                <strong>Important:</strong> The SQL AND condition requires that <span class="highlight">both conditions should be met</span>. The SQL AND condition also can be used to join multiple tables in a SQL statement.
+            </div>
+
+            <div class="syntax">
+                <strong>Syntax:</strong>
+                <pre><code>SELECT columns FROM tables WHERE condition1 AND condition2;</code></pre>
+            </div>
+
+            <div class="example">
+                <strong>Examples:</strong>
+                
+                <h4>1. SELECT with AND:</h4>
+                <pre><code>SELECT * 
+FROM emp 
+WHERE Department = "IT" AND Location = "Mumbai";</code></pre>
+
+                <h4>2. UPDATE with AND:</h4>
+                <pre><code>UPDATE emp 
+SET Location = "Delhi" 
+WHERE Department = "Marketing" AND First_Name = "John";</code></pre>
+
+                <h4>3. DELETE with AND:</h4>
+                <pre><code>DELETE FROM emp 
+WHERE Last_Name = 'Jain' AND Location = 'Bangalore';</code></pre>
+            </div>
+
+            
+        </div>
+
+        <div class="section">
+            <h2>SQL WITH CLAUSE</h2>
+            
+            <p>The SQL WITH clause is used to provide a sub-query block which can be referenced in several places within the main SQL query. It was introduced by Oracle in Oracle 9i Release 2 database.</p>
+
+            <h3>Syntax 1:</h3>
+            <div class="syntax">
+                <pre><code>WITH <alias_name> AS (sql_subquery_statement)
+SELECT column_list 
+FROM <alias_name> [table_name]
+[WHERE <join_condition>];</code></pre>
+            </div>
+
+            <h3>Syntax 2:</h3>
+            <div class="syntax">
+                <pre><code>WITH alias_name AS (
+    sql_subquery_statement
+)
+SELECT column_list
+FROM alias_name
+WHERE condition;</code></pre>
+            </div>
+
+            
+        </div>
+
+        <div class="section">
+            <h2>GROUP BY Clause</h2>
+            
+            <p>The GROUP BY clause in MySQL is used to group rows that have the same values in one or more columns and then apply aggregate functions on each group.</p>
+
+            <div class="syntax">
+                <strong>Syntax:</strong>
+                <pre><code>SELECT column_name, AGGREGATE_FUNCTION(column_name)
+FROM table_name
+GROUP BY column_name;</code></pre>
+            </div>
+
+            <div class="example">
+                <strong>Examples:</strong>
+                
+                <h4>Example 1: Count employees by city</h4>
+                <pre><code>SELECT COUNT(ID), city 
+FROM employee 
+GROUP BY city;</code></pre>
+
+                <h4>Example 2: Count with WHERE condition</h4>
+                <pre><code>SELECT city, COUNT(*) AS emp_count
+FROM employee
+WHERE salary > 45000
+GROUP BY city;</code></pre>
+            </div>
+
+            
+        </div>
+
+        <div class="section">
+            <h2>HAVING Clause</h2>
+            
+            <p>The HAVING clause is used to filter grouped results after the GROUP BY clause is applied.</p>
+
+            <div class="syntax">
+                <strong>Syntax:</strong>
+                <pre><code>SELECT column_name, AGGREGATE_FUNCTION(column_name)
+FROM table_name
+GROUP BY column_name
+HAVING condition;</code></pre>
+            </div>
+
+            <div class="example">
+                <strong>Example:</strong>
+                <pre><code>SELECT dept, COUNT(*)
+FROM employee
+GROUP BY dept
+HAVING COUNT(*) > 5;</code></pre>
+            </div>
+
+           
+        </div>
+
+        <div class="comparison-table">
+            <h3 style="color: #667eea; margin-bottom: 20px;">GROUP BY vs HAVING - Comparison</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>GROUP BY</th>
+                        <th>HAVING</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Purpose</strong></td>
+                        <td>Groups rows</td>
+                        <td>Filters groups</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Works on</strong></td>
+                        <td>Rows → Groups</td>
+                        <td>Groups</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Aggregate functions</strong></td>
+                        <td>Required</td>
+                        <td>Used in condition</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Query order</strong></td>
+                        <td>Before HAVING</td>
+                        <td>After GROUP BY</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Alternative</strong></td>
+                        <td>—</td>
+                        <td>Similar to WHERE</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="note" style="margin-top: 20px;">
+                <strong>Note:</strong> GROUP BY groups rows into summary rows, while HAVING filters those grouped results based on aggregate conditions.
+            </div>
+        </div>
+
+        <div style="margin-top: 40px;">
+            <h3 style="color: #667eea; text-align: center; margin-bottom: 20px;">SQL Clauses Summary</h3>
+            <div class="clause-card">WHERE - Filters individual rows before grouping</div>
+            <div class="clause-card">AND/OR - Combines multiple conditions</div>
+            <div class="clause-card">WITH - Creates temporary named result sets (CTEs)</div>
+            <div class="clause-card">GROUP BY - Groups rows with same values</div>
+            <div class="clause-card">HAVING - Filters grouped results after aggregation</div>
+        </div>
+    </div>
+</body>
+</html>

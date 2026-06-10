@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL SELECT Operations Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            border-bottom: 4px solid #667eea;
+            padding-bottom: 15px;
+        }
+
+        h2 {
+            color: #764ba2;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-left: 5px solid #764ba2;
+            padding-left: 15px;
+        }
+
+        h3 {
+            color: #555;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        .intro {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 25px 0;
+            font-size: 1.1em;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .definition {
+            background-color: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .definition strong {
+            color: #667eea;
+            font-size: 1.1em;
+        }
+
+        pre {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            border-left: 5px solid #667eea;
+        }
+
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95em;
+        }
+
+        .syntax {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .syntax strong {
+            color: #0d47a1;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .example {
+            background-color: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .example strong {
+            color: #2e7d32;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .note strong {
+            color: #856404;
+        }
+
+        .info {
+            background-color: #e1f5fe;
+            border-left: 4px solid #00bcd4;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .info strong {
+            color: #006064;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        p {
+            margin: 15px 0;
+            text-align: justify;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .highlight {
+            background-color: #fff9c4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+
+        .operations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .operation-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1em;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .operation-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        li {
+            margin: 8px 0;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>SQL SELECT Operations Guide</h1>
+
+        <div class="intro">
+            <strong>SELECT</strong> is an SQL command which is used to show or retrieve the required data from the
+            database. We can also access particular records from particular columns of the table.
+        </div>
+
+        <div class="section">
+            <h2>SQL SELECT</h2>
+
+            <p>The SELECT statement allows you to query and retrieve data from database tables. It is one of the most
+                fundamental and frequently used SQL commands.</p>
+
+            
+
+            <div class="syntax">
+                <strong>Syntax:</strong>
+                <pre><code>SELECT * FROM Name_of_Table WHERE [condition];</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>SQL SELECT UNIQUE</h2>
+
+            <div class="info">
+                <strong>Important:</strong> Actually, there is no difference between DISTINCT and UNIQUE. SELECT UNIQUE
+                is an old syntax which was used in Oracle description but later ANSI standard defines DISTINCT as the
+                official keyword.
+            </div>
+
+            <div class="syntax">
+                <strong>Syntax:</strong>
+                <pre><code>SELECT UNIQUE column_name
+FROM table_name;</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>SQL SELECT DISTINCT</h2>
+
+            <p>The SQL DISTINCT command is used with SELECT keyword to retrieve only distinct or unique data. In a
+                table, there may be a chance to exist a duplicate value and sometimes we want to retrieve only unique
+                values. In such scenarios, SQL SELECT DISTINCT statement is used.</p>
+
+            <div class="note">
+                <strong>Note:</strong> SQL SELECT UNIQUE and SQL SELECT DISTINCT statements are same.
+            </div>
+
+            <div class="syntax">
+                <strong>Syntax:</strong>
+                <pre><code>SELECT DISTINCT column_name, column_name
+FROM table_name;</code></pre>
+            </div>
+
+            
+        </div>
+
+        <div class="section">
+            <h2>SQL SELECT COUNT</h2>
+
+            <p>The SQL COUNT() is a function that returns the number of records of the table in the output.</p>
+
+            <div class="syntax">
+                <strong>Syntax:</strong>
+                <pre><code>SELECT COUNT(column_name) FROM table_name;</code></pre>
+            </div>
+
+            
+        </div>
+
+        <div class="section">
+            <h2>SQL SELECT TOP</h2>
+
+            <p>The SELECT TOP statement in SQL shows the limited number of records or rows from the database table. The
+                TOP clause in the statement specifies how many rows are returned.</p>
+
+            <div class="syntax">
+                <strong>Syntax:</strong>
+                <pre><code>SELECT TOP 3 Car_Name, Car_Color FROM Cars;</code></pre>
+            </div>
+
+            
+        </div>
+
+        <div class="section">
+            <h2>SQL SELECT RANDOM</h2>
+
+            <p>The SQL SELECT RANDOM() function returns the random row. It can be used in online exams to display random
+                questions.</p>
+
+            <div class="syntax">
+                <strong>Syntax:</strong>
+                <pre><code>SELECT column FROM table
+ORDER BY RAND()
+LIMIT 1;</code></pre>
+            </div>
+
+            
+        </div>
+
+        <div class="section">
+            <h2>SQL SELECT IN</h2>
+
+            <p>SQL IN is an operator used in a SQL query to help reduce the need to use multiple SQL "OR" conditions. It
+                is used in SELECT, INSERT, UPDATE or DELETE statements.</p>
+
+            <div class="syntax">
+                <strong>Syntax:</strong>
+                <pre><code>Expression IN (value1, value2 ... valueN);</code></pre>
+            </div>
+
+            <div class="example">
+                <strong>Example:</strong>
+                <pre><code>SELECT *
+FROM students
+WHERE students_name IN ('Amit', 'Raghav', 'Rajeev');</code></pre>
+            </div>
+
+            
+        </div>
+
+        <div class="section">
+            <h2>SQL SELECT DATE</h2>
+
+            <p>SQL SELECT DATE is used to retrieve a date from a database. If you want to find a particular date from a
+                database, you can use this statement.</p>
+
+            <h3>Method 1: Using Greater Than or Equal</h3>
+            <div class="syntax">
+                <strong>Syntax:</strong>
+                <pre><code>SELECT * FROM table_name 
+WHERE your_date_column >= '2013-12-12';</code></pre>
+            </div>
+
+            <h3>Method 2: Using CAST Function</h3>
+            <div class="syntax">
+                <strong>Syntax:</strong>
+                <pre><code>SELECT * FROM table_name 
+WHERE CAST(column_name AS DATE) = '1996-01-01';</code></pre>
+            </div>
+
+            <h3>Method 3: Using BETWEEN</h3>
+            <div class="syntax">
+                <strong>Syntax:</strong>
+                <pre><code>SELECT * FROM table_name 
+WHERE yourdate BETWEEN '2012-12-12' AND '2013-12-12';</code></pre>
+            </div>
+
+            
+        </div>
+
+        <div class="section">
+            <h2>SQL SELECT SUM</h2>
+
+            <p>It is also known as SQL SUM() function. It is used in a SQL query to return summed value of an
+                expression.</p>
+
+            <div class="info">
+                <strong>Note:</strong> If it is a number then return count; if varchar then return zero.
+            </div>
+
+            <div class="syntax">
+                <strong>Syntax:</strong>
+                <pre><code>SELECT SUM(expression)
+FROM tables
+WHERE conditions;</code></pre>
+            </div>
+
+
+        </div>
+
+        <div class="operations-grid">
+            <div class="operation-card">SELECT</div>
+            <div class="operation-card">SELECT UNIQUE</div>
+            <div class="operation-card">SELECT DISTINCT</div>
+            <div class="operation-card">SELECT COUNT</div>
+            <div class="operation-card">SELECT TOP</div>
+            <div class="operation-card">SELECT RANDOM</div>
+            <div class="operation-card">SELECT IN</div>
+            <div class="operation-card">SELECT DATE</div>
+            <div class="operation-card">SELECT SUM</div>
+        </div>
+    </div>
+</body>
+
+</html>

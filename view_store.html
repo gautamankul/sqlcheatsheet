@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Functions, Views & Stored Procedures</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            border-bottom: 4px solid #667eea;
+            padding-bottom: 15px;
+        }
+
+        h2 {
+            color: #764ba2;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-left: 5px solid #764ba2;
+            padding-left: 15px;
+        }
+
+        h3 {
+            color: #555;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        h4 {
+            color: #666;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .intro {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 25px 0;
+            font-size: 1.1em;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .definition {
+            background-color: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .definition strong {
+            color: #667eea;
+            font-size: 1.1em;
+        }
+
+        pre {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            border-left: 5px solid #667eea;
+        }
+
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95em;
+        }
+
+        .syntax {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .syntax strong {
+            color: #0d47a1;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .example {
+            background-color: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .example strong {
+            color: #2e7d32;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .note strong {
+            color: #856404;
+        }
+
+        .warning {
+            background-color: #ffebee;
+            border-left: 4px solid #f44336;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .warning strong {
+            color: #c62828;
+        }
+
+        .info {
+            background-color: #e1f5fe;
+            border-left: 4px solid #00bcd4;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .info strong {
+            color: #006064;
+        }
+
+        .takeaway {
+            background-color: #f3e5f5;
+            border-left: 4px solid #9c27b0;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .takeaway h3 {
+            color: #9c27b0;
+            margin-bottom: 15px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        p {
+            margin: 15px 0;
+            text-align: justify;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .types-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .type-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .type-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .function-category {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #667eea;
+        }
+
+        .function-category h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        li {
+            margin: 8px 0;
+            color: #555;
+        }
+
+        .highlight {
+            background-color: #fff9c4;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .emoji {
+            font-size: 1.3em;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>SQL Functions, Views & Stored Procedures</h1>
+
+        <div class="section">
+            <h2>SQL Functions</h2>
+
+            <div class="intro">
+                In MySQL, a <strong>function</strong> is a routine that takes input values, performs a calculation or
+                operation, and returns a single value.
+            </div>
+
+
+
+            <div class="types-grid">
+                <div class="type-card">
+                    <div class="emoji">🔧</div>
+                    <h4 style="color: white; margin-top: 10px;">System Defined</h4>
+                    <p style="text-align: center; color: white;">e.g., Max(), Now()</p>
+                </div>
+                <div class="type-card">
+                    <div class="emoji">👤</div>
+                    <h4 style="color: white; margin-top: 10px;">User-Defined (UDFs)</h4>
+                    <p style="text-align: center; color: white;">Custom Functions</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><span class="emoji">1️⃣</span> Built-in (System) Functions</h2>
+
+            <p>These are predefined by MySQL and used directly in queries.</p>
+
+            <div class="function-category">
+                <h4><span class="emoji">🔹</span> String Functions</h4>
+                <pre><code>SELECT UPPER('mysql');
+SELECT LENGTH('Hello');
+SELECT CONCAT('Hello', ' ', 'World');</code></pre>
+            </div>
+
+            <div class="function-category">
+                <h4><span class="emoji">🔹</span> Numeric Functions</h4>
+                <pre><code>SELECT ABS(-10);
+SELECT ROUND(12.567, 2);
+SELECT CEIL(4.2);</code></pre>
+            </div>
+
+            <div class="function-category">
+                <h4><span class="emoji">🔹</span> Date & Time Functions</h4>
+                <pre><code>SELECT NOW();
+SELECT CURDATE();
+SELECT DATEDIFF('2026-01-10', '2026-01-01');</code></pre>
+            </div>
+
+            <div class="function-category">
+                <h4><span class="emoji">🔹</span> Aggregate Functions</h4>
+                <p style="margin-bottom: 10px;">Work on multiple rows and return one value</p>
+                <pre><code>SELECT COUNT(*);
+SELECT SUM(salary);
+SELECT AVG(marks);
+SELECT MAX(age);
+SELECT MIN(age);</code></pre>
+            </div>
+
+
+        </div>
+
+        <div class="section">
+            <h2><span class="emoji">2️⃣</span> User-Defined Functions (UDFs)</h2>
+
+            <p>You can create your own function in MySQL.</p>
+
+            <div class="syntax">
+                <strong>Syntax:</strong>
+                <pre><code>DELIMITER $$
+
+CREATE FUNCTION function_name(parameter datatype)
+RETURNS datatype
+DETERMINISTIC
+BEGIN
+    -- statements
+    RETURN value;
+END$$
+
+DELIMITER ;</code></pre>
+            </div>
+
+            <div class="example">
+                <strong>Creating Function:</strong>
+                <pre><code>DELIMITER $$
+
+CREATE FUNCTION square_num(n INT)
+RETURNS INT
+DETERMINISTIC
+BEGIN
+    RETURN n * n;
+END$$
+
+DELIMITER ;</code></pre>
+            </div>
+
+            <div class="example">
+                <strong>Calling Function:</strong>
+                <pre><code>SELECT square_num(5);</code></pre>
+            </div>
+
+
+        </div>
+
+        <div class="section">
+            <h2>SQL Views</h2>
+
+            <div class="intro">
+                A SQL view is a virtual table created by SELECT query. It does not store data physically but displays
+                data stored in underlying tables. Views help simplify complex queries, enhance security, and present
+                data in a cleaner, customized format.
+            </div>
+
+            <div class="definition">
+                <strong>What is a View?</strong><br><br>
+                A view is essentially a saved SQL query that behaves like a table. Think of it as a <span
+                    class="highlight">window into your data</span> — you see a filtered or transformed version without
+                duplicating storage.
+            </div>
+
+
+
+            <div class="syntax">
+                <strong>Syntax:</strong>
+                <pre><code>CREATE VIEW view_name AS
+SELECT column1, column2.....
+FROM table_name
+WHERE condition;</code></pre>
+            </div>
+
+            <div class="info">
+                <strong>View Types:</strong><br>
+                • <strong>Complex views</strong> (joins, aggregates, DISTINCT, GROUP BY) → read-only.<br>
+                • <strong>Simple views</strong> (single table, no aggregates) → updatable/deletable.<br>
+                • Use complex views for analytics and simple views for controlled updates.
+            </div>
+
+            <div class="takeaway">
+                <h3><span class="emoji">🚀</span> Key Takeaways</h3>
+
+                <h4>1. Create Sub Table from Existing Table</h4>
+                <pre><code>CREATE TABLE CustomerSubTable AS
+SELECT CustomerID, FirstName, LastName
+FROM customer;</code></pre>
+
+                <h4>2. Create View</h4>
+                <pre><code>CREATE VIEW mid_age_customer AS
+SELECT CustomerID, FirstName, LastName
+FROM customer
+WHERE Age >= 50;</code></pre>
+
+                <h4>3. Create or Update View</h4>
+                <pre><code>CREATE OR REPLACE VIEW YoungCustomers AS
+SELECT FirstName, LastName, Age, Country
+FROM Customer
+WHERE Age < 23;</code></pre>
+
+                <h4>4. Delete View</h4>
+                <pre><code>DROP VIEW mid_age_customer;</code></pre>
+
+                <h4>5. View with JOIN</h4>
+                <pre><code>CREATE VIEW CustomerOrdersSummary AS
+SELECT
+    c.CustomerID,
+    c.FirstName,
+    c.LastName,
+    c.Country,
+    COUNT(o.OrderID) AS TotalOrders,
+    SUM(o.Amount) AS TotalSpent
+FROM Customer c
+LEFT JOIN Orders o ON c.CustomerID = o.CustomerID
+GROUP BY c.CustomerID, c.FirstName, c.LastName, c.Country;</code></pre>
+            </div>
+
+
+        </div>
+
+        <div class="section">
+            <h2>Stored Procedures</h2>
+
+            <div class="intro">
+                A stored procedure in SQL is a saved collection of SQL statements that can be executed as a single unit,
+                often with input/output parameters, making database operations reusable, efficient, and secure.
+            </div>
+
+            <h3>What is a Stored Procedure?</h3>
+
+            <div class="definition">
+                <strong>Definition:</strong> A stored procedure is precompiled SQL code stored in the database. It can
+                be executed repeatedly without rewriting the SQL each time.<br><br>
+                <strong>Purpose:</strong> Encapsulates logic such as queries, updates, inserts, or complex calculations
+                into one callable unit.<br><br>
+                <strong>Parameters:</strong> Can accept input parameters (values passed in), output parameters (values
+                returned), or both.<br><br>
+                <strong>Execution:</strong> Called by applications, users, or other procedures using a simple command
+                like <code>EXEC procedure_name</code>.
+            </div>
+
+
+
+            <div class="example">
+                <strong>1. Creating a Stored Procedure:</strong>
+                <pre><code>CREATE PROCEDURE GetCustomerOrders
+    @CustomerID INT
+AS
+BEGIN
+    SELECT OrderID, OrderDate, TotalAmount
+    FROM Orders
+    WHERE CustomerID = @CustomerID;
+END;</code></pre>
+            </div>
+
+            <div class="example">
+                <strong>2. Executing the Procedure:</strong>
+                <pre><code>EXEC GetCustomerOrders @CustomerID = 101;</code></pre>
+            </div>
+
+            <div class="warning">
+                <strong><span class="emoji">⚠️</span> Drawbacks:</strong><br><br>
+                • Debugging can be harder compared to application code.<br>
+                • Overuse may lead to complex, hard-to-maintain procedures.<br>
+                • Tightly couples logic with the database, reducing portability.
+            </div>
+
+            <div class="note">
+                <strong>In short:</strong> Stored procedures are like "functions" inside the database — powerful tools
+                for efficiency, security, and reusability.
+            </div>
+
+
+        </div>
+    </div>
+</body>
+
+</html>

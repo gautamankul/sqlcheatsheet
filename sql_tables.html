@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Table Operations Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            border-bottom: 4px solid #667eea;
+            padding-bottom: 15px;
+        }
+
+        h2 {
+            color: #764ba2;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-left: 5px solid #764ba2;
+            padding-left: 15px;
+        }
+
+        h3 {
+            color: #555;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        h4 {
+            color: #666;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .intro {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 25px 0;
+            font-size: 1.1em;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .definition {
+            background-color: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .definition strong {
+            color: #667eea;
+            font-size: 1.1em;
+        }
+
+        pre {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            border-left: 5px solid #667eea;
+        }
+
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95em;
+        }
+
+        .syntax {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .syntax strong {
+            color: #0d47a1;
+        }
+
+        .example {
+            background-color: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .example strong {
+            color: #2e7d32;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .note strong {
+            color: #856404;
+        }
+
+        .difference {
+            background-color: #fce4ec;
+            border-left: 4px solid #e91e63;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .difference h4 {
+            color: #c2185b;
+            margin-bottom: 15px;
+        }
+
+        .difference ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        .difference li {
+            margin: 10px 0;
+            color: #555;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        p {
+            margin: 15px 0;
+            text-align: justify;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        li {
+            margin: 8px 0;
+            color: #555;
+        }
+
+        .highlight {
+            background-color: #fff9c4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+
+        .operations-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .operation-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SQL Table Operations Guide</h1>
+        
+        <div class="intro">
+            <strong>Table:</strong> A table is a collection of data, organized in terms of rows and columns. In DBMS terminology, a table is known as <span class="highlight">relation</span> and a row as <span class="highlight">tuple</span>.
+        </div>
+
+        <div class="definition">
+            <strong>What is a Table?</strong><br><br>
+            A table is used to store data in a relational database. It is a collection of rows and columns. Each column in a database table represents the attributes and each row represents a set of column values in the database table. A row of a table is also known as a <strong>record</strong>.
+        </div>
+
+        
+
+        <div class="syntax">
+            <strong>General Table Creation Syntax:</strong>
+            <pre><code>CREATE TABLE [Schema].<table_name>
+(
+    <column_name1> <data_type> [DEFAULT <expression>] [<Column_constraints>],
+    <column_name2> <data_type> [DEFAULT <expression>] [<Column_constraints>],
+    <column_nameN> <data_type> [DEFAULT <expression>] [<Column_constraints>],
+    [<table_constraints>]
+);</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>1. SQL CREATE TABLE</h2>
+            
+            <pre><code>CREATE TABLE collage (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100)
+);</code></pre>
+
+            <pre><code>CREATE TABLE Employee (
+    ID INT PRIMARY KEY,
+    FirstName VARCHAR(255),
+    LastName VARCHAR(255),
+    Email VARCHAR(255),
+    AddressLine VARCHAR(255),
+    City VARCHAR(255),
+    collage_id INT,
+    FOREIGN KEY (collage_id) REFERENCES collage(ID)
+);</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>2. Copy Table from Another</h2>
+            
+            <p>Create a new table by copying specific columns from an existing table:</p>
+            
+            <pre><code>CREATE TABLE Teacher AS
+SELECT ID, FirstName, Email
+FROM Employee;</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>3. SQL INSERT INTO Statement</h2>
+            
+            <p>The SQL INSERT INTO statement is the most commonly used Data Manipulation Language (DML) command whose work is to insert data in a database. It is one of the most important and basic commands in SQL for writing data into a database table. It is used to insert a single or multiple records in a table.</p>
+
+            <h3>Syntax 1: Inserting Single Row</h3>
+            <div class="syntax">
+                <pre><code>INSERT INTO table_name (column1, column2 ... columnN)
+VALUES (value1, value2 ... valueN);</code></pre>
+            </div>
+
+            <h3>Syntax 2: Inserting Multiple Rows</h3>
+            <div class="syntax">
+                <pre><code>INSERT INTO table_name (column1, column2 ... columnN)
+VALUES 
+    (value1, value2 ... valueN),
+    (value1, value2 ... valueN),
+    (value1, value2 ... valueN);</code></pre>
+            </div>
+
+            <div class="example">
+                <strong>Example:</strong>
+                <pre><code>INSERT INTO Employee (FirstName, LastName, Email, AddressLine, City)
+VALUES 
+    ('Ankul', 'Gautam', 'ankul@gmail.com', 'E-city', 'Bangalore'),
+    ('Ajeet', 'Gautam', 'ajeet@gmail.com', 'Khairpara', 'Jaunpur'),
+    ('Manshi', 'Yadav', 'manshi@gmail.com', 'Mohanlalgunj', 'Lucknow');</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>4. SQL DROP TABLE</h2>
+            
+            <p>The DROP command is used to remove database objects like tables, databases, views, indexes, or stored procedures <strong>permanently</strong>. When we remove something by using the DROP command, we cannot roll back the action. If we want to recover the deleted data, it comes only after backing up the data. The DROP command is used in DDL statements.</p>
+
+            <div class="syntax">
+                <strong>Syntax:</strong>
+                <pre><code>DROP TABLE table_name;</code></pre>
+            </div>
+
+            <div class="example">
+                <strong>Example:</strong>
+                <pre><code>CREATE DATABASE hollywood_db;</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>5. SQL DELETE TABLE</h2>
+            
+            <p>The DELETE statement is used to delete rows from a table. If you want to remove a specific row from a table you should use WHERE condition.</p>
+
+            <div class="syntax">
+                <strong>Syntax:</strong>
+                <pre><code>DELETE FROM table_name [WHERE condition];</code></pre>
+            </div>
+
+            <div class="note">
+                <strong>Note:</strong> If you do not specify the WHERE condition it will remove all the rows from the table.
+                <pre><code>DELETE FROM table_name;</code></pre>
+            </div>
+
+            <p>There are some more terms similar to DELETE statement like DROP statement and TRUNCATE statement but they are not exactly the same - there are some differences between them.</p>
+
+            <div class="difference">
+                <h4>Difference between DELETE and TRUNCATE statements</h4>
+                <ul>
+                    <li><strong>DELETE:</strong> Only deletes the rows from the table based on the condition defined by WHERE clause or delete all the rows from the table when condition is not specified. But it does <strong>not free the space</strong> containing by the table.</li>
+                    <li><strong>TRUNCATE:</strong> Used to delete all the rows from the table and <strong>free the containing space</strong>.</li>
+                </ul>
+                <div class="syntax">
+                    <strong>Syntax:</strong>
+                    <pre><code>TRUNCATE TABLE employee;</code></pre>
+                </div>
+            </div>
+
+            <div class="difference">
+                <h4>Difference between DROP and TRUNCATE statements</h4>
+                <ul>
+                    <li><strong>DROP:</strong> When you use the drop statement it deletes the table's rows together with the table's definition so all the relationships of that table with other tables will no longer be valid.</li>
+                    <li>When you drop a table:
+                        <ul>
+                            <li>Table structure will be dropped</li>
+                            <li>Relationship will be dropped</li>
+                            <li>Integrity constraints will be dropped</li>
+                            <li>Access privileges will also be dropped</li>
+                        </ul>
+                    </li>
+                    <li><strong>TRUNCATE:</strong> When you truncate a table, the table structure remains the same, so you will not face any of the above problems.</li>
+                    <li>In TRUNCATE, table all records will be erased but table structure remains the same. In DROP, if you want to drop a parent table then it will say 'reference table delete first'.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>6. SQL RENAME TABLE</h2>
+            
+            <p>Both the RENAME TABLE and ALTER TABLE statements help in changing the name of the table.</p>
+
+            <h3>Syntax 1: Using RENAME TABLE</h3>
+            <div class="syntax">
+                <pre><code>RENAME TABLE old_table_name TO new_table_name;</code></pre>
+            </div>
+
+            <h3>Syntax 2: Using ALTER TABLE</h3>
+            <div class="syntax">
+                <pre><code>ALTER TABLE old_table_name RENAME TO new_table_name;</code></pre>
+            </div>
+
+            <div class="example">
+                <strong>Examples:</strong>
+                <pre><code>RENAME TABLE teacher TO student;</code></pre>
+                <pre><code>ALTER TABLE student RENAME TO teacher;</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>7. Copy Table Data</h2>
+            
+            <div class="syntax">
+                <strong>Syntax:</strong>
+                <pre><code>SELECT * INTO new_table_name FROM old_table_name;</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>8. SQL ALTER TABLE</h2>
+            
+            <p>The ALTER TABLE statement in Structured Query Language allows you to add, modify, and delete columns of an existing table. This statement also allows database users to add and remove various SQL constraints on the existing tables.</p>
+
+            <h3>1. ADD Column</h3>
+            <div class="syntax">
+                <strong>Syntax:</strong>
+                <pre><code>ALTER TABLE table_name ADD column_name column_definition;</code></pre>
+            </div>
+            <div class="example">
+                <strong>Example:</strong>
+                <pre><code>ALTER TABLE teacher ADD phone VARCHAR(10);</code></pre>
+            </div>
+
+            <h3>2. DROP Column</h3>
+            <div class="syntax">
+                <strong>Syntax:</strong>
+                <pre><code>ALTER TABLE table_name DROP COLUMN column_name;</code></pre>
+            </div>
+            <div class="example">
+                <strong>Examples:</strong>
+                <pre><code>ALTER TABLE Cars DROP COLUMN Car_Color;</code></pre>
+                <pre><code>ALTER TABLE teacher DROP phone;</code></pre>
+            </div>
+
+            <h3>3. RENAME Table</h3>
+            <div class="syntax">
+                <strong>Syntax:</strong>
+                <pre><code>ALTER TABLE table_name RENAME TO new_table_name;</code></pre>
+            </div>
+            <div class="example">
+                <strong>Example:</strong>
+                <pre><code>RENAME TABLE teacher TO student;</code></pre>
+            </div>
+
+            <h3>4. RENAME Column</h3>
+            <div class="syntax">
+                <strong>Syntax:</strong>
+                <pre><code>ALTER TABLE table_name RENAME COLUMN old_name TO new_name;</code></pre>
+            </div>
+            <div class="example">
+                <strong>Example:</strong>
+                <pre><code>ALTER TABLE teacher RENAME COLUMN phone TO mobile;</code></pre>
+            </div>
+        </div>
+
+        <div class="operations-list">
+            <div class="operation-card">CREATE TABLE</div>
+            <div class="operation-card">DROP TABLE</div>
+            <div class="operation-card">DELETE</div>
+            <div class="operation-card">TRUNCATE</div>
+            <div class="operation-card">RENAME TABLE</div>
+            <div class="operation-card">ALTER TABLE</div>
+            <div class="operation-card">INSERT INTO</div>
+            <div class="operation-card">COPY TABLE</div>
+        </div>
+    </div>
+</body>
+</html>

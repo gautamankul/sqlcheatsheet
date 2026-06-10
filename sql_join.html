@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Joins Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            border-bottom: 4px solid #667eea;
+            padding-bottom: 15px;
+        }
+
+        h2 {
+            color: #764ba2;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-left: 5px solid #764ba2;
+            padding-left: 15px;
+        }
+
+        h3 {
+            color: #555;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        .intro {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 25px 0;
+            font-size: 1.1em;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .definition {
+            background-color: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .definition strong {
+            color: #667eea;
+            font-size: 1.1em;
+        }
+
+        pre {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            border-left: 5px solid #667eea;
+        }
+
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95em;
+        }
+
+        .join-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .join-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .join-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .join-card h4 {
+            color: white;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .join-card p {
+            color: #f0f0f0;
+            font-size: 0.95em;
+            text-align: left;
+        }
+
+        .sample-tables {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .table-title {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            font-weight: bold;
+            font-size: 1.2em;
+            text-align: center;
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .join-section {
+            background-color: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 30px 0;
+            border-left: 5px solid #667eea;
+        }
+
+        .join-section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .join-description {
+            background-color: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .join-description strong {
+            color: #2e7d32;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            height: 300px;
+        }
+
+        p {
+            margin: 15px 0;
+            text-align: justify;
+        }
+
+        .highlight {
+            background-color: #fff9c4;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        ul {
+            margin: 20px 0;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        ul li {
+            background: white;
+            margin: 10px 0;
+            padding: 15px;
+            border-left: 4px solid #667eea;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        ul li strong {
+            color: #667eea;
+            font-size: 1.1em;
+        }
+
+        .arrow {
+            color: #764ba2;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>SQL Joins Guide</h1>
+
+        <div class="intro">
+            <strong>JOIN</strong> means to combine something. In case of SQL, JOIN means <span class="highlight">"to
+                combine two or more tables"</span>. SQL joins are the basic operations performed in SQL queries to
+            combine multiple tables in a single output table.
+        </div>
+
+        <img src="https://github.com/dhanushupgrad/ModelDiagram/blob/main/Tree%20diagram%20illustr%20for%20sql%20join.png?raw=true"
+            alt="SQL Joins Overview Diagram" height="100px">
+
+        <h2>Types of SQL Joins</h2>
+
+        <ul>
+            <li><strong>1. INNER JOIN</strong> <span class="arrow">→</span> Returns rows with matching values in both
+                tables.</li>
+            <li><strong>2. LEFT JOIN</strong> <span class="arrow">→</span> Returns all rows from the left table, plus
+                matches from the right.</li>
+            <li><strong>3. RIGHT JOIN</strong> <span class="arrow">→</span> Returns all rows from the right table, plus
+                matches from the left.</li>
+            <li><strong>4. FULL OUTER JOIN</strong> <span class="arrow">→</span> Returns all rows when there's a match
+                in either table.</li>
+            <li><strong>5. CROSS JOIN</strong> <span class="arrow">→</span> Returns Cartesian product (all
+                combinations).</li>
+            <li><strong>6. SELF JOIN</strong> <span class="arrow">→</span> Joins a table to itself.</li>
+        </ul>
+
+        <h2>Sample Tables</h2>
+
+        <div class="sample-tables">
+            <div class="table-container">
+                <div class="table-title">Employees</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>EmpID</th>
+                            <th>Name</th>
+                            <th>DeptID</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Alice</td>
+                            <td>10</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Bob</td>
+                            <td>20</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Charlie</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Diana</td>
+                            <td>NULL</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-container">
+                <div class="table-title">Departments</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>DeptID</th>
+                            <th>DeptName</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>10</td>
+                            <td>HR</td>
+                        </tr>
+                        <tr>
+                            <td>20</td>
+                            <td>Engineering</td>
+                        </tr>
+                        <tr>
+                            <td>40</td>
+                            <td>Marketing</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="join-section">
+            <h3>1. INNER JOIN</h3>
+
+            <div class="join-description">
+                <strong>Description:</strong> Returns only matching rows from both tables.
+            </div>
+
+            <pre><code>SELECT e.Name, d.DeptName
+FROM Employees e
+INNER JOIN Departments d ON e.DeptID = d.DeptID;</code></pre>
+
+
+        </div>
+
+        <div class="join-section">
+            <h3>2. LEFT JOIN</h3>
+
+            <div class="join-description">
+                <strong>Description:</strong> Returns all rows from Employees, with matched Departments.
+            </div>
+
+            <pre><code>SELECT e.Name, d.DeptName
+FROM Employees e
+LEFT JOIN Departments d ON e.DeptID = d.DeptID;</code></pre>
+
+
+        </div>
+
+        <div class="join-section">
+            <h3>3. RIGHT JOIN</h3>
+
+            <div class="join-description">
+                <strong>Description:</strong> Returns all rows from Departments, with matched Employees.
+            </div>
+
+            <pre><code>SELECT e.Name, d.DeptName
+FROM Employees e
+RIGHT JOIN Departments d ON e.DeptID = d.DeptID;</code></pre>
+
+
+        </div>
+
+        <div class="join-section">
+            <h3>4. FULL OUTER JOIN</h3>
+
+            <div class="join-description">
+                <strong>Description:</strong> Returns all rows from both tables, matched where possible.
+            </div>
+
+            <pre><code>SELECT e.Name, d.DeptName
+FROM Employees e
+FULL OUTER JOIN Departments d ON e.DeptID = d.DeptID;</code></pre>
+
+
+        </div>
+
+        <div class="join-section">
+            <h3>5. CROSS JOIN</h3>
+
+            <div class="join-description">
+                <strong>Description:</strong> Returns Cartesian product — all combinations.
+            </div>
+
+            <pre><code>SELECT e.Name, d.DeptName
+FROM Employees e
+CROSS JOIN Departments d;</code></pre>
+
+
+        </div>
+
+        <div class="join-section">
+            <h3>6. SELF JOIN</h3>
+
+            <div class="join-description">
+                <strong>Description:</strong> Joins a table to itself — e.g., finding employees in the same department.
+            </div>
+
+            <pre><code>SELECT e1.Name AS Emp1, e2.Name AS Emp2
+FROM Employees e1
+JOIN Employees e2 ON e1.DeptID = e2.DeptID
+WHERE e1.EmpID <> e2.EmpID;</code></pre>
+
+
+        </div>
+
+        <div class="join-types">
+            <div class="join-card">
+                <h4>INNER JOIN</h4>
+                <p>Only matching rows</p>
+            </div>
+            <div class="join-card">
+                <h4>LEFT JOIN</h4>
+                <p>All left + matches</p>
+            </div>
+            <div class="join-card">
+                <h4>RIGHT JOIN</h4>
+                <p>All right + matches</p>
+            </div>
+            <div class="join-card">
+                <h4>FULL OUTER</h4>
+                <p>All rows from both</p>
+            </div>
+            <div class="join-card">
+                <h4>CROSS JOIN</h4>
+                <p>All combinations</p>
+            </div>
+            <div class="join-card">
+                <h4>SELF JOIN</h4>
+                <p>Table joins itself</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Introduction Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            border-bottom: 4px solid #667eea;
+            padding-bottom: 15px;
+        }
+
+        h2 {
+            color: #764ba2;
+            margin-top: 35px;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-left: 5px solid #764ba2;
+            padding-left: 15px;
+        }
+
+        h3 {
+            color: #555;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        .memory-trick {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 25px 0;
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .emoji {
+            font-size: 1.5em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .properties {
+            background-color: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .properties ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        .properties li {
+            margin: 8px 0;
+            color: #555;
+        }
+
+        pre {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            border-left: 5px solid #667eea;
+        }
+
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95em;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .note strong {
+            color: #856404;
+        }
+
+        .example {
+            background-color: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .example strong {
+            color: #0d47a1;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            height: 400px;
+        }
+
+        p {
+            margin: 15px 0;
+            text-align: justify;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SQL Introduction Guide</h1>
+        
+        <div class="memory-trick">
+            <span class="emoji">🧠 👉</span> "My Dear Child Teacher" - M D C T
+        </div>
+
+        <div class="section">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Letter</th>
+                        <th>Category</th>
+                        <th>Meaning</th>
+                        <th>Examples</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>M</strong></td>
+                        <td>DML</td>
+                        <td>Manipulate data</td>
+                        <td>SELECT, INSERT, UPDATE, DELETE</td>
+                    </tr>
+                    <tr>
+                        <td><strong>D</strong></td>
+                        <td>DDL</td>
+                        <td>Define structure</td>
+                        <td>CREATE, ALTER, DROP, TRUNCATE</td>
+                    </tr>
+                    <tr>
+                        <td><strong>C</strong></td>
+                        <td>DCL</td>
+                        <td>Control access</td>
+                        <td>GRANT, REVOKE</td>
+                    </tr>
+                    <tr>
+                        <td><strong>T</strong></td>
+                        <td>TCL</td>
+                        <td>Transaction control</td>
+                        <td>COMMIT, ROLLBACK, SAVEPOINT</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p style="text-align: center; font-style: italic; color: #667eea; font-size: 1.2em; margin-top: 15px;">
+                One-line memory trick: "My Dear Child Teaches SQL"
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>1. SQL Version</h2>
+            <pre><code>SELECT version();</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>2. SQL Constraint Keys</h2>
+            <img src="https://github.com/dhanushupgrad/ModelDiagram/blob/main/SQL_Diagram-1024x972.png?raw=true" alt="SQL Keys Diagram" height="100">
+
+            <h3>a. PRIMARY KEY</h3>
+            <p>
+                PRIMARY KEY is the column that identifies each row distinctly in the table. 
+                It acts as the main identifier in the table and ensures that each row contains a 
+                different value.
+            </p>
+            <p>
+                It helps to prevent duplication and null entries in the table. It is also useful to 
+                maintain the consistency, accuracy and integrity of data.
+            </p>
+
+            <div class="properties">
+                <strong>Properties of SQL PRIMARY KEY:</strong>
+                <ul>
+                    <li>Duplicate values are not allowed. If a column is assigned as the primary key, it only contains unique values.</li>
+                    <li>The primary key will not take NULL values.</li>
+                    <li>Only one primary key is accepted in the table.</li>
+                    <li>If a primary key has multiple columns, it is called a composite primary key.</li>
+                </ul>
+            </div>
+
+            <h3>b. FOREIGN KEY</h3>
+            <p>
+                The FOREIGN KEY in SQL is the column in one table that references the primary 
+                key in another table. It makes a relationship between two tables with the help of a 
+                common column that has unique rows in the column.
+            </p>
+            <p>
+                Foreign keys are helpful in maintaining referential integrity which makes sure 
+                that data after the relationship remains consistent and invalid data is not 
+                entered into the system.
+            </p>
+
+            <pre><code>CREATE TABLE Employees (
+    Emp_ID INT PRIMARY KEY,
+    Emp_Name VARCHAR(100),
+    Salary DECIMAL(10, 2),
+    Dept_ID INT,
+    CONSTRAINT fk_dept
+    FOREIGN KEY (Dept_ID)
+    REFERENCES Departments(Dept_ID)
+);</code></pre>
+
+            <h3>c. Candidate Key</h3>
+            <p>
+                A Candidate Key is a column or set of columns that can uniquely identify each 
+                row in a table. A table can have multiple candidate keys and one of them is chosen 
+                as the Primary Key.
+            </p>
+
+            <pre><code>CREATE TABLE Student (
+    RollNo INT,
+    Email VARCHAR(255),
+    Phone VARCHAR(20),
+    Name VARCHAR(100),
+    PRIMARY KEY (RollNo)
+);</code></pre>
+
+            <div class="example">
+                <strong>Here:</strong><br>
+                RollNo, Email, and Phone could all uniquely identify a student → they are candidate keys.<br>
+                RollNo is chosen as the primary key.
+            </div>
+
+            <h3>d. Composite Key</h3>
+            <p>
+                A key that consists of two or more columns together to uniquely identify a row. 
+                A Composite Key is a key made up of two or more columns used together to 
+                uniquely identify a record. Individual columns cannot uniquely identify the row.
+            </p>
+
+            <pre><code>CREATE TABLE CourseRegistration (
+    StudentID INT,
+    CourseID INT,
+    RegistrationDate DATE,
+    PRIMARY KEY (StudentID, CourseID)
+);</code></pre>
+
+            <p><em>Useful when no single column is unique by itself.</em></p>
+
+            <h3>e. Alternative Key</h3>
+            <p>
+                An Alternate Key is a candidate key that is NOT chosen as the primary key.
+            </p>
+
+            <pre><code>CREATE TABLE Employee (
+    EmpID INT PRIMARY KEY,
+    Email VARCHAR(255) UNIQUE,
+    Phone VARCHAR(20) UNIQUE,
+    Name VARCHAR(100)
+);</code></pre>
+
+            <div class="example">
+                <strong>Explanation:</strong><br>
+                EmpID, Email, and Phone are candidate keys.<br>
+                EmpID is chosen as the primary key.<br>
+                Email and Phone become alternative keys.
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>3. SQL Create Database</h2>
+            
+            <pre><code>CREATE DATABASE Database_Name;</code></pre>
+            <pre><code>SHOW DATABASES;</code></pre>
+            <pre><code>USE Database_Name;</code></pre>
+
+            <div class="example">
+                <strong>Example:</strong>
+                <pre><code>CREATE DATABASE Employee;</code></pre>
+            </div>
+
+            <h3>Drop Database</h3>
+            <p>It will remove all tables and schema:</p>
+            
+            <pre><code>DROP DATABASE Database_Name;</code></pre>
+
+            <div class="example">
+                <strong>Example:</strong>
+                <pre><code>DROP DATABASE Employee;</code></pre>
+            </div>
+
+            <div class="note">
+                <strong>Note:</strong><br>
+                "MySQL doesn't support RENAME DATABASE. Instead, I'd create a new database and move the tables 
+                using RENAME TABLE, or use mysqldump to export and re-import under a new name."
+            </div>
+        </div>
+    </div>
+</body>
+</html>
